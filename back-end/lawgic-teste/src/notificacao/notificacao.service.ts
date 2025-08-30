@@ -58,42 +58,34 @@ export class NotificacaoService {
   }
 
   async findOne(id_notificacao: number) {
-    try {
-      const notificacao = await this.notificacaoRepository.findOne({
-        where: { id_notificacao },
-        relations: {
-          notificado: {
-            enderecos: true,
-          },
+    const notificacao = await this.notificacaoRepository.findOne({
+      where: { id_notificacao },
+      relations: {
+        notificado: {
+          enderecos: true,
         },
-      });
+      },
+    });
 
-      if (!notificacao) {
-        throw new HttpException(
-          'Entidade não encontrada',
-          HttpStatus.NOT_FOUND,
-        );
-      }
-
-      return notificacao;
-    } catch (error: any) {
+    if (!notificacao) {
       throw new HttpException(
         {
-          message: 'Erro ao criar notificação',
-          details: error.message,
+          message: 'Notificação não encontrada',
+          code: HttpStatus.NOT_FOUND,
         },
-        HttpStatus.INTERNAL_SERVER_ERROR,
+        HttpStatus.NOT_FOUND,
       );
     }
+
+    return notificacao;
   }
 
   async update(
     id_notificacao: number,
     updateNotificacaoDto: UpdateNotificacaoDto,
   ) {
+    await this.findOne(id_notificacao);
     try {
-      await this.findOne(id_notificacao);
-
       const notificacaoAtualizada = {
         ...updateNotificacaoDto,
         status: Status.VALIDACAO,
