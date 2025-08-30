@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import {
   IsString,
   IsNotEmpty,
@@ -33,10 +33,7 @@ export class CreateNotificacaoDto {
   @IsNotEmpty()
   data_audiencia: string;
 
-  @ApiProperty({
-    example: 1,
-    description: 'ID do notificado relacionado',
-  })
+  @ApiHideProperty()
   @IsNumber()
   @IsOptional()
   notificadoId?: number;

@@ -33,7 +33,11 @@ export class Notificacao {
   })
   status: Status;
 
-  @OneToOne(() => Notificado, { nullable: true })
+  @OneToOne(() => Notificado, {
+    nullable: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   @JoinColumn()
   notificado?: Notificado;
 }

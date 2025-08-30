@@ -21,7 +21,10 @@ export class Notificado {
   @Column()
   telefone: string;
 
-  @OneToMany(() => Endereco, (endereco) => endereco.notificado)
+  @OneToMany(() => Endereco, (endereco) => endereco.notificado, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   enderecos: Endereco[];
 
   @OneToOne(() => Notificacao, (notificacao) => notificacao.notificado)

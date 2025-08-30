@@ -23,6 +23,8 @@ export class Endereco {
   @Column()
   CEP: string;
 
-  @ManyToOne(() => Notificado, (notificado) => notificado.enderecos)
+  @ManyToOne(() => Notificado, (notificado) => notificado.enderecos, {
+    onDelete: 'CASCADE',
+  })
   notificado: Notificado;
 }
