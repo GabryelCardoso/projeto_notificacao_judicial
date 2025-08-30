@@ -33,7 +33,7 @@ export class Notificacao {
   })
   status: Status;
 
-  @OneToOne(() => Notificado)
+  @OneToOne(() => Notificado, { nullable: true })
   @JoinColumn()
-  notificado: Notificado;
+  notificado?: Notificado;
 }
