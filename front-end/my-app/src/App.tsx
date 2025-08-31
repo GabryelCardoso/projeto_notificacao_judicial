@@ -1,12 +1,17 @@
 import AppRoutes from "./routes/routes";
 import { BrowserRouter } from "react-router-dom";
-import "./App.css";
+import Footer from "./components/footer";
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <div>
+      <div>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </div>
+      <Footer />
+    </div>
   );
 }
 
