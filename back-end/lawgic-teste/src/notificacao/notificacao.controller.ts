@@ -39,12 +39,12 @@ export class NotificacaoController {
     return this.notificacaoService.update(+id, updateNotificacaoDto);
   }
 
-  @Put(':id')
+  @Put('andamento/:id')
   updateStatusAndamento(@Param('id') id: string) {
     return this.notificacaoService.setStatusEmAndamento(+id);
   }
 
-  @Put(':id')
+  @Put('concluir/:id')
   updateStatusConcluido(@Param('id') id: string) {
     return this.notificacaoService.setStatusConcluido(+id);
   }

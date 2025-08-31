@@ -1,10 +1,9 @@
 import { useNotificacoes } from "../hooks/useNotificacoes";
+import { Status } from "../types/notificacao";
+import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
-  const { notificacoes, loading, error, refetch } = useNotificacoes();
-
-  const handleRefresh = () => {
-    refetch();
-  };
+  const { notificacoes, loading, error } = useNotificacoes();
+  const navigate = useNavigate();
 
   if (loading) return <div className="text-white">Carregando...</div>;
   if (error) return <div className="text-red-400">Erro: {error}</div>;
@@ -21,20 +20,31 @@ export default function Dashboard() {
 
         <div className="grid md:grid-cols-4 gap-6 mb-8">
           <div className="bg-cyan-900 p-6 rounded-lg shadow-lg">
-            <h3 className="text-2xl font-bold text-white mb-2">12</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {notificacoes.length}
+            </h3>
             <p className="text-gray-300">Total de Notificações</p>
           </div>
           <div className="bg-cyan-900 p-6 rounded-lg shadow-lg">
-            <h3 className="text-2xl font-bold text-white mb-2">8</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {notificacoes.filter((n) => n.status === Status.CONCLUIDO).length}
+            </h3>
             <p className="text-gray-300">Concluídas</p>
           </div>
           <div className="bg-cyan-900 p-6 rounded-lg shadow-lg">
-            <h3 className="text-2xl font-bold text-white mb-2">3</h3>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {
+                notificacoes.filter((n) => n.status === Status.EM_ANDAMENTO)
+                  .length
+              }
+            </h3>
             <p className="text-gray-300">Em Andamento</p>
           </div>
           <div className="bg-cyan-900 p-6 rounded-lg shadow-lg">
-            <h3 className="text-2xl font-bold text-white mb-2">1</h3>
-            <p className="text-gray-300">Pendentes</p>
+            <h3 className="text-2xl font-bold text-white mb-2">
+              {notificacoes.filter((n) => n.status === Status.VALIDACAO).length}
+            </h3>
+            <p className="text-gray-300">Validação</p>
           </div>
         </div>
 
@@ -84,9 +94,7 @@ export default function Dashboard() {
                       )}
                     </td>
                     <td className="py-4 px-6 text-gray-300">
-                      {notificacao.notificado
-                        ? notificacao.notificado.nome
-                        : "-"}
+                      {notificacao.notificado?.nome || "Sem notificado"}
                     </td>
                     <td className="py-4 px-6">
                       <span className="px-3 py-1 text-white rounded-full text-sm font-medium ">
@@ -94,7 +102,16 @@ export default function Dashboard() {
                       </span>
                     </td>
                     <td className="py-4 px-6 text-gray-300">
-                      <button>Editar</button>
+                      <button
+                        disabled={notificacao.status === Status.CONCLUIDO}
+                        className={
+                          notificacao.status === Status.CONCLUIDO
+                            ? " bg-white text-slate-800 px-3 py-1 opacity-50 rounded-lg font-medium cursor-not-allowed"
+                            : "bg-white text-slate-800 px-3 py-1 rounded-lg font-medium hover:bg-gray-100 transition-colors shadow-lg cursor-pointer"
+                        }
+                      >
+                        Editar
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -118,7 +135,10 @@ export default function Dashboard() {
         </div>
 
         <div className="mt-8 text-center">
-          <button className="bg-white text-slate-800 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors shadow-lg">
+          <button
+            onClick={() => navigate("/notificacao")}
+            className="bg-white text-slate-800 px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition-colors shadow-lg cursor-pointer"
+          >
             Nova Notificação
           </button>
         </div>

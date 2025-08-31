@@ -17,14 +17,16 @@ export class Notificacao {
 
   status: Status;
 
-  notificado: Notificado;
+  notificado?: Notificado;
 
   constructor(obj?: any) {
     this.id_notificacao = obj.id_notificacao;
     this.titulo = obj.titulo;
-    this.descricao = obj.objdescricao;
+    this.descricao = obj.descricao;
     this.data_audiencia = obj.data_audiencia;
     this.status = obj.status;
-    this.notificado = new Notificado(obj.notificado);
+    this.notificado = obj.notificado
+      ? new Notificado(obj.notificado)
+      : undefined;
   }
 }
