@@ -40,7 +40,12 @@ export class NotificacaoService {
 
   async findAll() {
     try {
-      const notificacoes = await this.notificacaoRepository.find();
+      const notificacoes = await this.notificacaoRepository.find({
+        relations: {
+          notificado: true,
+        },
+      });
+
       return notificacoes;
     } catch (error: any) {
       throw new HttpException(

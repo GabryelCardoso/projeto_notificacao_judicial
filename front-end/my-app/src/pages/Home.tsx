@@ -47,7 +47,10 @@ export default function Home() {
               >
                 Criar notificação
               </button>
-              <button className="bg-gray-900 text-white w-50 py-3 rounded-lg font-medium hover:bg-gray-950 transition-colors shadow-lg cursor-pointer">
+              <button
+                className="bg-gray-900 text-white w-50 py-3 rounded-lg font-medium hover:bg-gray-950 transition-colors shadow-lg cursor-pointer"
+                onClick={() => navigate("/dashboard")}
+              >
                 Dashboard
               </button>
             </div>
