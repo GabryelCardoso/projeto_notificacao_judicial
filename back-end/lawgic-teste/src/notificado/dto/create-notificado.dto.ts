@@ -55,7 +55,7 @@ export class CreateNotificadoDto {
     required: false,
     type: Number,
   })
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
-  notificacaoId?: number;
+  notificacaoId: number;
 }

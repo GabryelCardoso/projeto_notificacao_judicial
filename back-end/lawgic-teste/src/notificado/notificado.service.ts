@@ -4,10 +4,12 @@ import { UpdateNotificadoDto } from './dto/update-notificado.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Notificado } from './entities/notificado.entity';
 import { Endereco } from 'src/enderecos/entities/endereco.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
+
 import { ServiceSuccessResponse } from 'src/common/success/service-success-response';
 import { HttpStatus } from '@nestjs/common';
 import { DataSource } from 'typeorm';
+import { NotificacaoService } from 'src/notificacao/notificacao.service';
 @Injectable()
 export class NotificadoService {
   constructor(
@@ -16,16 +18,25 @@ export class NotificadoService {
     @InjectRepository(Endereco)
     private enderecoRepository: Repository<Endereco>,
     private dataSource: DataSource,
+    private notificacaoService: NotificacaoService,
   ) {}
   async create(createNotificadoDto: CreateNotificadoDto) {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
 
+    const notificacao = await this.notificacaoService.findOne(
+      createNotificadoDto.notificacaoId,
+    );
+
     try {
       const { enderecos, ...notificadoData } = createNotificadoDto;
 
-      const notificado = this.notificadoRepository.create(notificadoData);
+      const notificado = this.notificadoRepository.create({
+        ...notificadoData,
+        notificacao,
+      });
+
       await queryRunner.manager.save(notificado);
 
       if (enderecos && Array.isArray(enderecos)) {
@@ -105,22 +116,28 @@ export class NotificadoService {
     const notificado = await this.findOne(id_notificado);
 
     try {
-      const { enderecos, ...notificadoData } = updateNotificadoDto;
-
-      Object.assign(notificado, notificadoData);
+      Object.assign(notificado, updateNotificadoDto);
 
       //A atualização de endereços exclui os atuais para criar novos no lugar
-      if (enderecos && Array.isArray(enderecos)) {
-        await queryRunner.manager.delete(Endereco, {
-          notificado: { id_notificado },
-        });
-
-        for (const enderecoDto of enderecos) {
-          const endereco = this.enderecoRepository.create({
-            ...enderecoDto,
-            notificado,
-          });
-          await queryRunner.manager.save(endereco);
+      if (notificado.enderecos && Array.isArray(notificado.enderecos)) {
+        for (const enderecoDto of notificado.enderecos) {
+          if (enderecoDto.id_endereco) {
+            await queryRunner.manager.update(
+              Endereco,
+              enderecoDto.id_endereco,
+              {
+                ...enderecoDto,
+                notificado,
+              },
+            );
+          } else {
+            // Cria novo endereço se não tiver ID
+            const novoEndereco = this.enderecoRepository.create({
+              ...enderecoDto,
+              notificado,
+            });
+            await queryRunner.manager.save(novoEndereco);
+          }
         }
       }
 

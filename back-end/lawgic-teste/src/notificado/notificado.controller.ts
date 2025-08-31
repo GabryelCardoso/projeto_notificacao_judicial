@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
 import { NotificadoService } from './notificado.service';
 import { CreateNotificadoDto } from './dto/create-notificado.dto';
 import { UpdateNotificadoDto } from './dto/update-notificado.dto';
