@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { NotificadoService } from './notificado.service';
 import { CreateNotificadoDto } from './dto/create-notificado.dto';
 import { UpdateNotificadoDto } from './dto/update-notificado.dto';
@@ -23,12 +31,10 @@ export class NotificadoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateNotificadoDto: UpdateNotificadoDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateNotificadoDto: UpdateNotificadoDto,
+  ) {
     return this.notificadoService.update(+id, updateNotificadoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.notificadoService.remove(+id);
   }
 }

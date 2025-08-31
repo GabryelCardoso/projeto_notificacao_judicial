@@ -1,8 +1,4 @@
-import {
-  HttpStatus,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateNotificacaoDto } from './dto/create-notificacao.dto';
 import { UpdateNotificacaoDto } from './dto/update-notificacao.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -49,7 +45,7 @@ export class NotificacaoService {
     } catch (error: any) {
       throw new HttpException(
         {
-          message: 'Erro ao criar notificação',
+          message: 'Erro ao listar notificações',
           details: error.message,
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
