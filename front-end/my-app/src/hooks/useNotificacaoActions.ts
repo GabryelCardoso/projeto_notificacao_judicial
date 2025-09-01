@@ -15,6 +15,7 @@ export function useNotificacaoActions() {
       setCreating(true);
       const novaNotificacao = await notificacaoService.create(data);
       setError(null);
+      console.log(novaNotificacao);
       return novaNotificacao.data.id_notificacao;
     } catch (err: any) {
       setError(err.message || "Erro ao carregar notificação");
@@ -28,14 +29,13 @@ export function useNotificacaoActions() {
     nome: string;
     email: string;
     telefone: string;
-    enderecos: Array<{
-      logradouro: string;
-      numero: number;
-      bairro: string;
-      cidade: string;
-      estado: string;
-      CEP: string;
-    }>;
+    notificacaoid: number;
+    logradouro: string;
+    numero: number;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    CEP: string;
   }) => {
     try {
       setCreating(true);
@@ -49,10 +49,42 @@ export function useNotificacaoActions() {
     }
   };
 
+  const updateStatusConcluido = async (id_notificacao: number) => {
+    try {
+      setCreating(true);
+      const response = await notificacaoService.updateStatusConcluido(
+        id_notificacao
+      );
+      setError(null);
+      return response;
+    } catch (err: any) {
+      console.error(err.message || "Erro ao atualizar status da notificação");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const updateStatusAndamento = async (id_notificacao: number) => {
+    try {
+      setCreating(true);
+      const response = await notificacaoService.updateStatusAndamento(
+        id_notificacao
+      );
+      setError(null);
+      return response;
+    } catch (err: any) {
+      console.error(err.message || "Erro ao atualizar status da notificação");
+    } finally {
+      setCreating(false);
+    }
+  };
+
   return {
     error,
     creating,
     createNotificacao,
     createNotificado,
+    updateStatusConcluido,
+    updateStatusAndamento,
   };
 }

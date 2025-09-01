@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Notificacao } from './entities/notificacao.entity';
 import { Notificado } from 'src/notificado/entities/notificado.entity';
-import { Endereco } from 'src/enderecos/entities/endereco.entity';
 import { Status } from './entities/notificacao.entity';
 import { HttpException } from '@nestjs/common';
 import { ServiceSuccessResponse } from 'src/common/success/service-success-response';
@@ -67,9 +66,7 @@ export class NotificacaoService {
     const notificacao = await this.notificacaoRepository.findOne({
       where: { id_notificacao },
       relations: {
-        notificado: {
-          enderecos: true,
-        },
+        notificado: true,
       },
     });
 
@@ -129,11 +126,6 @@ export class NotificacaoService {
 
       //Esse bloco verifica se existe um notificado e se existir itera sobre seus endrereços para remover eles do banco e remove o notificado
       if (notificado) {
-        if (notificado.enderecos && notificado.enderecos.length > 0) {
-          await queryRunner.manager.delete(Endereco, {
-            id_endereco: In(notificado.enderecos.map((e) => e.id_endereco)),
-          });
-        }
         await queryRunner.manager.delete(Notificado, notificado.id_notificado);
       }
 
@@ -170,6 +162,25 @@ export class NotificacaoService {
         'Status alterado para Em Andamento',
         200,
       );
+    } catch (error: any) {
+      throw new HttpException(
+        {
+          message: 'Erro ao alterar status da notificação',
+          details: error.message,
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async setStatusValidacao(id_notificacao: number) {
+    try {
+      const notificacao = await this.findOne(id_notificacao);
+
+      notificacao.status = Status.VALIDACAO;
+      await this.notificacaoRepository.save(notificacao);
+
+      return new ServiceSuccessResponse('Status alterado para Validação', 200);
     } catch (error: any) {
       throw new HttpException(
         {

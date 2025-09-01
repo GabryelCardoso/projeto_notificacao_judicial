@@ -113,6 +113,17 @@ export default function Dashboard() {
                     <td className="py-4 px-6 text-gray-300">
                       <button
                         disabled={notificacao.status === Status.CONCLUIDO}
+                        onClick={async () => {
+                          if (notificacao.status === Status.VALIDACAO)
+                            navigate(
+                              `/validacao/${notificacao.id_notificacao}`
+                            );
+
+                          if (notificacao.status === Status.EM_ANDAMENTO)
+                            navigate(
+                              `/notificado/${notificacao.id_notificacao}`
+                            );
+                        }}
                         className={
                           notificacao.status === Status.CONCLUIDO
                             ? " bg-white text-slate-800 px-3 py-1 opacity-50 rounded-lg font-medium cursor-not-allowed"
@@ -126,20 +137,6 @@ export default function Dashboard() {
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-
-        <div className="mt-6 flex  justify-end items-center text-sm text-gray-300">
-          <div className="flex space-x-2">
-            <button className="px-4 py-2 bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition-colors">
-              Anterior
-            </button>
-            <button className="px-4 py-2 bg-gray-900 text-white rounded hover:bg-gray-950 transition-colors">
-              1
-            </button>
-            <button className="px-4 py-2 bg-slate-700 text-gray-300 rounded hover:bg-slate-600 transition-colors">
-              Próximo
-            </button>
           </div>
         </div>
 

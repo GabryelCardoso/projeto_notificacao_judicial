@@ -1,11 +1,5 @@
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  OneToOne,
-} from 'typeorm';
-import { Endereco } from 'src/enderecos/entities/endereco.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
+
 import { Notificacao } from 'src/notificacao/entities/notificacao.entity';
 @Entity()
 export class Notificado {
@@ -21,11 +15,23 @@ export class Notificado {
   @Column()
   telefone: string;
 
-  @OneToMany(() => Endereco, (endereco) => endereco.notificado, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  enderecos: Endereco[];
+  @Column()
+  logradouro: string;
+
+  @Column()
+  numero: number;
+
+  @Column()
+  bairro: string;
+
+  @Column()
+  cidade: string;
+
+  @Column()
+  estado: string;
+
+  @Column()
+  CEP: string;
 
   @OneToOne(() => Notificacao, (notificacao) => notificacao.notificado)
   notificacao: Notificacao;

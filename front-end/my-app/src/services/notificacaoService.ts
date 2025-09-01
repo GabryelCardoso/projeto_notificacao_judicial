@@ -19,23 +19,32 @@ export const notificacaoService = {
     data_audiencia: string;
   }) => {
     const response = await api.post("/notificacao", data);
-    return response;
+    return response.data;
   },
 
   createNotificado: async (data: {
     nome: string;
     email: string;
     telefone: string;
-    enderecos: Array<{
-      logradouro: string;
-      numero: number;
-      bairro: string;
-      cidade: string;
-      estado: string;
-      CEP: string;
-    }>;
+    logradouro: string;
+    numero: number;
+    bairro: string;
+    cidade: string;
+    estado: string;
+    CEP: string;
+    notificacaoid: number;
   }) => {
     const response = await api.post("/notificado", data);
     return response;
+  },
+
+  updateStatusConcluido: async (idNotificacao: number) => {
+    const response = await api.put(`/notificacao/concluir/${idNotificacao}`);
+    return response.data;
+  },
+
+  updateStatusAndamento: async (idNotificacao: number) => {
+    const response = await api.put(`/notificacao/andamento/${idNotificacao}`);
+    return response.data;
   },
 };

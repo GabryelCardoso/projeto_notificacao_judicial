@@ -13,6 +13,7 @@ export default function Notificacao() {
 
   const onSubmit = async (data: any) => {
     const idNotificacao = await createNotificacao(data);
+    console.log(idNotificacao);
     navigate(`/notificado/${idNotificacao}`);
   };
 
