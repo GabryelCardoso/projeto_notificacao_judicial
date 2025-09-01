@@ -5,9 +5,14 @@ import { useNotificacoesList } from "../hooks/useNotificacaoList";
 import { useNotificacaoActions } from "../hooks/useNotificacaoActions";
 export default function Notificado() {
   const { notificacaoId } = useParams();
-  const { notificacao } = useNotificacoesList(Number(notificacaoId));
+  const { notificacao, loading, error } = useNotificacoesList(
+    Number(notificacaoId)
+  );
   const { createNotificado } = useNotificacaoActions();
   const navigate = useNavigate();
+
+  if (loading) return <div className="text-white">Carregando...</div>;
+  if (error) return <div className="text-red-400">Erro: {error}</div>;
 
   const {
     register,
