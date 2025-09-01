@@ -9,7 +9,7 @@ export default function Dashboard() {
   if (error) return <div className="text-red-400">Erro: {error}</div>;
 
   return (
-    <div className="min-h-screen p-6">
+    <div className="p-6">
       <div className="max-w-8xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-light text-white mb-2">
