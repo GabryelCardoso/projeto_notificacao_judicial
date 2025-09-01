@@ -7,6 +7,8 @@ export function useNotificacoes() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [creating, setCreating] = useState(false);
+
   const fetchNotificacoes = async () => {
     try {
       setLoading(true);
@@ -28,10 +30,32 @@ export function useNotificacoes() {
     fetchNotificacoes();
   };
 
+  const createNotificacao = async (data: {
+    titulo: string;
+    descricao: string;
+    data_audiencia: string;
+    status?: string;
+  }) => {
+    try {
+      setCreating(true);
+
+      const novaNotificacao = await notificacaoService.create(data);
+
+      return novaNotificacao;
+    } catch (err: any) {
+      setError(err.message || "Erro ao criar notificação");
+    } finally {
+      setCreating(false);
+    }
+  };
+
   return {
     notificacoes,
     loading,
     error,
     refetch,
+    creating,
+
+    createNotificacao,
   };
 }

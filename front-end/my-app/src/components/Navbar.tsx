@@ -1,12 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const location = useLocation();
-
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
-
   return (
     <nav className="bg-transparent border-b border-white/20">
       <div className="max-w-8xl mx-auto px-6 py-4">
