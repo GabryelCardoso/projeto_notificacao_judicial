@@ -1,11 +1,8 @@
-import { useForm } from "react-hook-form";
-export default function Notificado() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
+export default function FormNotificado(
+  edit: boolean,
+  register?: any,
+  errors?: any
+) {
   return (
     <div className=" p-6">
       <div className="max-w-4xl mx-auto">
