@@ -24,8 +24,13 @@ export class NotificacaoService {
       status: Status.EM_ANDAMENTO,
     };
     try {
-      await this.notificacaoRepository.save(notificacaoData);
-      return new ServiceSuccessResponse('Notificação criada com sucesso', 201);
+      const novaNotificacao =
+        await this.notificacaoRepository.save(notificacaoData);
+      return new ServiceSuccessResponse(
+        'Notificação criada com sucesso',
+        201,
+        novaNotificacao,
+      );
     } catch (error: any) {
       throw new HttpException(
         {

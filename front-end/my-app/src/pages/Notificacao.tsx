@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useNotificacoes } from "../hooks/useNotificacoes";
+import { useNotificacaoActions } from "../hooks/useNotificacaoActions";
 export default function Notificacao() {
-  const { createNotificacao } = useNotificacoes();
+  const { createNotificacao } = useNotificacaoActions();
 
   const navigate = useNavigate();
   const {
@@ -12,12 +12,8 @@ export default function Notificacao() {
   } = useForm();
 
   const onSubmit = async (data: any) => {
-    try {
-      await createNotificacao(data);
-      navigate("/notificado");
-    } catch (error: any) {
-      console.error("Erro ao salvar:", error);
-    }
+    const idNotificacao = await createNotificacao(data);
+    navigate(`/notificado/${idNotificacao}`);
   };
 
   const handleCancel = () => {

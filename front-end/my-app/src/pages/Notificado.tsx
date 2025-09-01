@@ -1,14 +1,30 @@
 import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
+import { useNotificacoesList } from "../hooks/useNotificacaoList";
 export default function Notificado() {
+  const { notificacaoId } = useParams();
+  const { notificacao } = useNotificacoesList(Number(notificacaoId));
+  const navigate = useNavigate();
+  console.log(notificacao);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const onSubmit = async (data: any) => {
+    console.log(data);
+    // await createNotificado(data);
+    // navigate("/validacao");
+  };
+
+  const handleCancel = () => {
+    navigate(-1);
+  };
+
   return (
     <div className=" p-6">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <div className="mb-8">
           <h1 className="text-4xl font-light text-white mb-2">
             Cadastrar Notificado - Notifica
@@ -90,7 +106,7 @@ export default function Notificado() {
           </div>
 
           <h1 className="block text-2xl text-start font-medium text-gray-200 mb-4">
-            Dados do notificado
+            Dados pessoais do notificado
           </h1>
           <div className="flex space-x-4">
             <div className="flex-1">
@@ -158,6 +174,12 @@ export default function Notificado() {
               )}
             </div>
 
+            <div className="flex-1"></div>
+          </div>
+          <h1 className="block text-2xl text-start font-medium text-gray-200 mb-4">
+            Dados de endereço do notificado
+          </h1>
+          <div className="flex space-x-4">
             <div className="flex-1">
               <label
                 htmlFor="titulo"
@@ -178,9 +200,7 @@ export default function Notificado() {
                 </p>
               )}
             </div>
-          </div>
 
-          <div className="flex space-x-4">
             <div className="flex-1">
               <label
                 htmlFor="titulo"
@@ -189,32 +209,11 @@ export default function Notificado() {
                 Número *
               </label>
               <input
-                type="text"
-                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
-                placeholder="Ex: Citação para audiência de conciliação"
-                required
-                {...register("Nome", { required: true })}
-              />
-              {errors.titulo?.type == "required" && (
-                <p className="text-red-400 text-sm mt-1">
-                  Campo título é obrigatório
-                </p>
-              )}
-            </div>
-
-            <div className="flex-1">
-              <label
-                htmlFor="titulo"
-                className="block text-sm font-medium text-gray-200 mb-2"
-              >
-                Bairro *
-              </label>
-              <input
                 type="email"
                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
                 placeholder="Ex: Citação para audiência de conciliação"
                 required
-                {...register("email", { required: true })}
+                {...register("numero", { required: true })}
               />
               {errors.titulo?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
@@ -251,14 +250,14 @@ export default function Notificado() {
                 htmlFor="titulo"
                 className="block text-sm font-medium text-gray-200 mb-2"
               >
-                Estado *
+                Bairro *
               </label>
               <input
                 type="email"
                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
                 placeholder="Ex: Citação para audiência de conciliação"
                 required
-                {...register("email", { required: true })}
+                {...register("bairro", { required: true })}
               />
               {errors.titulo?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
@@ -274,14 +273,14 @@ export default function Notificado() {
                 htmlFor="titulo"
                 className="block text-sm font-medium text-gray-200 mb-2"
               >
-                CEP *
+                Estado *
               </label>
               <input
                 type="text"
                 className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
                 placeholder="Ex: Citação para audiência de conciliação"
                 required
-                {...register("Nome", { required: true })}
+                {...register("estado", { required: true })}
               />
               {errors.titulo?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
@@ -290,7 +289,26 @@ export default function Notificado() {
               )}
             </div>
 
-            <div className="flex-1"></div>
+            <div className="flex-1">
+              <label
+                htmlFor="titulo"
+                className="block text-sm font-medium text-gray-200 mb-2"
+              >
+                CEP *
+              </label>
+              <input
+                type="text"
+                className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
+                placeholder="Ex: Citação para audiência de conciliação"
+                required
+                {...register("cep", { required: true })}
+              />
+              {errors.titulo?.type == "required" && (
+                <p className="text-red-400 text-sm mt-1">
+                  Campo título é obrigatório
+                </p>
+              )}
+            </div>
           </div>
           <div className="flex space-x-4 pt-6">
             <button

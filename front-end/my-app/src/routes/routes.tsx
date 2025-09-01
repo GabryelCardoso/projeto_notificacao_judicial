@@ -9,7 +9,7 @@ export default function AppRoutes() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/notificacao" element={<Notificacao />} />
-      <Route path="/notificado" element={<Notificado />} />
+      <Route path="/notificado/:notificacaoId" element={<Notificado />} />
       <Route path="/validacao" element={<Validacao />} />
       <Route path="/dashboard" element={<Dashboard />} />
     </Routes>

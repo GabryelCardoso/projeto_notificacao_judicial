@@ -1,8 +1,8 @@
-import { useNotificacoes } from "../hooks/useNotificacoes";
-import { Status } from "../types/notificacao";
+import { useNotificacoesList } from "../hooks/useNotificacaoList";
+import { Notificacao, Status } from "../types/notificacao";
 import { useNavigate } from "react-router-dom";
 export default function Dashboard() {
-  const { notificacoes, loading, error } = useNotificacoes();
+  const { notificacoes, loading, error } = useNotificacoesList();
   const navigate = useNavigate();
 
   if (loading) return <div className="text-white">Carregando...</div>;
@@ -27,22 +27,31 @@ export default function Dashboard() {
           </div>
           <div className="bg-cyan-900 p-6 rounded-lg shadow-lg">
             <h3 className="text-2xl font-bold text-white mb-2">
-              {notificacoes.filter((n) => n.status === Status.CONCLUIDO).length}
+              {
+                notificacoes.filter(
+                  (n: Notificacao) => n.status === Status.CONCLUIDO
+                ).length
+              }
             </h3>
             <p className="text-gray-300">Concluídas</p>
           </div>
           <div className="bg-cyan-900 p-6 rounded-lg shadow-lg">
             <h3 className="text-2xl font-bold text-white mb-2">
               {
-                notificacoes.filter((n) => n.status === Status.EM_ANDAMENTO)
-                  .length
+                notificacoes.filter(
+                  (n: Notificacao) => n.status === Status.EM_ANDAMENTO
+                ).length
               }
             </h3>
             <p className="text-gray-300">Em Andamento</p>
           </div>
           <div className="bg-cyan-900 p-6 rounded-lg shadow-lg">
             <h3 className="text-2xl font-bold text-white mb-2">
-              {notificacoes.filter((n) => n.status === Status.VALIDACAO).length}
+              {
+                notificacoes.filter(
+                  (n: Notificacao) => n.status === Status.VALIDACAO
+                ).length
+              }
             </h3>
             <p className="text-gray-300">Validação</p>
           </div>
