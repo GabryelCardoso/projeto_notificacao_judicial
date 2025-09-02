@@ -1,19 +1,3 @@
-export interface Endereco {
-  id_endereco: number;
-
-  logradouro: string;
-
-  numero: number;
-
-  bairro: string;
-
-  cidade: string;
-
-  estado: string;
-
-  CEP: string;
-}
-
 export class Notificado {
   id_notificado: number;
 
