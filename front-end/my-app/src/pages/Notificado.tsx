@@ -3,19 +3,25 @@ import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useNotificacoesList } from "../hooks/useNotificacaoList";
 import { useNotificacaoActions } from "../hooks/useNotificacaoActions";
+import { Notificacao } from "../types/notificacao";
+
 export default function Notificado() {
-  const { notificacaoId } = useParams();
-  const { createNotificado } = useNotificacaoActions();
+  const { notificacaoId, flag } = useParams();
+  const navigate = useNavigate();
+
+  const { createNotificado, updateNotificado, updateNotificacao } =
+    useNotificacaoActions();
+
   const { notificacao, error, loading } = useNotificacoesList(
     Number(notificacaoId)
   );
-  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<Notificacao>();
 
   useEffect(() => {
     if (notificacao) {
@@ -26,13 +32,25 @@ export default function Notificado() {
   if (loading) return <div className="text-white">Carregando...</div>;
   if (error) return <div className="text-red-400">Erro: {error}</div>;
 
-  console.log(errors);
   const onSubmit = async (data: any) => {
-    data.notificado.notificacaoId = Number(notificacaoId);
-
-    console.log(data);
-    await createNotificado(data.notificado);
-    navigate(`/validacao/${notificacaoId}`);
+    const { notificado, ...notificacao } = data;
+    const responseNotificacao = await updateNotificacao(
+      Number(notificacaoId),
+      notificacao
+    );
+    if (!flag) {
+      console.log("SEM FLAG");
+      notificado.notificacaoId = Number(notificacaoId);
+      notificado.numero = Number(notificado.numero);
+      console.log(notificado);
+      const responseNotificado = await createNotificado(notificado);
+      //navigate(`/validacao/${notificacaoId}`);
+    } else {
+      const response = await updateNotificado(
+        Number(notificado.id_notificado),
+        notificado
+      );
+    }
   };
 
   const handleCancel = () => {
@@ -125,7 +143,7 @@ export default function Notificado() {
                 placeholder="Digite o nome completo do notificado"
                 {...register("notificado.nome", { required: true })}
               />
-              {errors.nome?.type == "required" && (
+              {errors.notificado?.nome?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo nome é obrigatório
                 </p>
@@ -142,7 +160,7 @@ export default function Notificado() {
                 placeholder="Digite o email do notificado"
                 {...register("notificado.email", { required: true })}
               />
-              {errors.email?.type == "required" && (
+              {errors.notificado?.email?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo email é obrigatório
                 </p>
@@ -161,7 +179,7 @@ export default function Notificado() {
                 placeholder="Digite o telefone do notificado"
                 {...register("notificado.telefone", { required: true })}
               />
-              {errors.telefone?.type == "required" && (
+              {errors.notificado?.telefone?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo telefone é obrigatório
                 </p>
@@ -184,7 +202,7 @@ export default function Notificado() {
                 placeholder="Digite o logradouro do notificado"
                 {...register("notificado.logradouro", { required: true })}
               />
-              {errors.logradouro?.type == "required" && (
+              {errors.notificado?.logradouro?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo logradouro é obrigatório
                 </p>
@@ -201,7 +219,7 @@ export default function Notificado() {
                 placeholder="Digite o número da residência"
                 {...register("notificado.numero", { required: true })}
               />
-              {errors.numero?.type == "required" && (
+              {errors.notificado?.numero?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo número é obrigatório
                 </p>
@@ -220,7 +238,7 @@ export default function Notificado() {
                 placeholder="Digite a cidade do notificado"
                 {...register("notificado.cidade", { required: true })}
               />
-              {errors.cidade?.type == "required" && (
+              {errors.notificado?.cidade?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo cidade é obrigatório
                 </p>
@@ -237,7 +255,7 @@ export default function Notificado() {
                 placeholder="Digite o bairro do notificado"
                 {...register("notificado.bairro", { required: true })}
               />
-              {errors.bairro?.type == "required" && (
+              {errors.notificado?.bairro?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo bairro é obrigatório
                 </p>
@@ -256,7 +274,7 @@ export default function Notificado() {
                 placeholder="Digite o estado do notificado"
                 {...register("notificado.estado", { required: true })}
               />
-              {errors.estado?.type == "required" && (
+              {errors.notificado?.estado?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo estado é obrigatório
                 </p>
@@ -273,7 +291,7 @@ export default function Notificado() {
                 placeholder="Digite o CEP do notificado"
                 {...register("notificado.CEP", { required: true })}
               />
-              {errors.CEP?.type == "required" && (
+              {errors.notificado?.CEP?.type == "required" && (
                 <p className="text-red-400 text-sm mt-1">
                   Campo CEP é obrigatório
                 </p>

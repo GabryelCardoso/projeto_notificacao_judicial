@@ -40,11 +40,41 @@ export const notificacaoService = {
     notificacaoid: number;
   }) => {
     const response = await api.post("/notificado", data);
-    return response;
+    return response.data;
   },
 
   updateStatusConcluido: async (idNotificacao: number) => {
     const response = await api.put(`/notificacao/concluir/${idNotificacao}`);
+    return response.data;
+  },
+
+  updateNotificado: async (
+    idNotificado: number,
+    data: Partial<{
+      nome: string;
+      email: string;
+      telefone: string;
+      logradouro: string;
+      numero: number;
+      bairro: string;
+      cidade: string;
+      estado: string;
+      CEP: string;
+    }>
+  ) => {
+    const response = await api.patch(`/notificado/${idNotificado}`, data);
+    return response.data;
+  },
+
+  updateNotificacao: async (
+    idNotificacao: number,
+    data: Partial<{
+      titulo: string;
+      descricao: string;
+      data_audiencia: string;
+    }>
+  ) => {
+    const response = await api.patch(`/notificacao/${idNotificacao}`, data);
     return response.data;
   },
 

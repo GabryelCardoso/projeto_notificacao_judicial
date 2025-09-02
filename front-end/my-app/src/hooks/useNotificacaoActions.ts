@@ -15,8 +15,7 @@ export function useNotificacaoActions() {
       setCreating(true);
       const novaNotificacao = await notificacaoService.create(data);
       setError(null);
-      console.log(novaNotificacao);
-      return novaNotificacao.data.id_notificacao;
+      return novaNotificacao;
     } catch (err: any) {
       setError(err.message || "Erro ao carregar notificação");
       console.error(err.message || "Erro ao criar notificação");
@@ -39,9 +38,9 @@ export function useNotificacaoActions() {
   }) => {
     try {
       setCreating(true);
-      const novaNotificacao = await notificacaoService.createNotificado(data);
+      const novoNotificado = await notificacaoService.createNotificado(data);
       setError(null);
-      return novaNotificacao;
+      return novoNotificado;
     } catch (err: any) {
       console.error(err.message || "Erro ao criar notificado");
     } finally {
@@ -59,6 +58,39 @@ export function useNotificacaoActions() {
       return response;
     } catch (err: any) {
       console.error(err.message || "Erro ao atualizar status da notificação");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const updateNotificado = async (id_notificado: number, data: any) => {
+    try {
+      setCreating(true);
+
+      const response = await notificacaoService.updateNotificado(
+        id_notificado,
+        data
+      );
+      setError(null);
+      return response;
+    } catch (err: any) {
+      console.error(err.message || "Erro ao atualizar notificado");
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const updateNotificacao = async (id_notificacao: number, data: any) => {
+    try {
+      setCreating(true);
+      const response = await notificacaoService.updateNotificacao(
+        id_notificacao,
+        data
+      );
+      setError(null);
+      return response;
+    } catch (err: any) {
+      console.error(err.message || "Erro ao atualizar notificação");
     } finally {
       setCreating(false);
     }
@@ -86,5 +118,7 @@ export function useNotificacaoActions() {
     createNotificado,
     updateStatusConcluido,
     updateStatusAndamento,
+    updateNotificacao,
+    updateNotificado,
   };
 }

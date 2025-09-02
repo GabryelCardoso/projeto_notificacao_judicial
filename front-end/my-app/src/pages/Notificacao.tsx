@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useForms } from "../hooks/useForms";
 import { useNotificacaoActions } from "../hooks/useNotificacaoActions";
+import toast from "react-hot-toast";
 export default function Notificacao() {
   const { formNotificacao, loading, error } = useForms();
   const { createNotificacao } = useNotificacaoActions();
@@ -17,9 +18,13 @@ export default function Notificacao() {
   if (loading) return <div className="text-white">Carregando...</div>;
   if (error) return <div className="text-red-400">Erro: {error}</div>;
   const onSubmit = async (data: any) => {
-    const idNotificacao = await createNotificacao(data);
-    console.log(idNotificacao);
-    navigate(`/notificado/${idNotificacao}`);
+    const response = await createNotificacao(data);
+    if (response.code === 201) {
+      toast.success("Notificação criada com sucesso!");
+      navigate(`/notificado/${response.data.id_notificacao}`);
+    } else {
+      toast.error("Erro ao criar notificação");
+    }
   };
 
   return (
@@ -36,12 +41,16 @@ export default function Notificacao() {
               </label>
               {campo.tipo === "textarea" ? (
                 <textarea
+                  id={campo.chave}
+                  placeholder={`Digite a ${campo.nome} da notificação`}
                   className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
                   {...register(campo.chave, { required: campo.obrigatorio })}
                 />
               ) : (
                 <input
                   type={campo.tipo}
+                  placeholder={`Digite o ${campo.nome} da notificação`}
+                  id={campo.chave}
                   className="w-full px-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-gray-400"
                   {...register(campo.chave, { required: campo.obrigatorio })}
                 />
