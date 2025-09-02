@@ -297,7 +297,7 @@ export default function Validacao() {
               className="bg-gray-900 text-white px-7 py-2 rounded-lg font-medium hover:bg-gray-950 transition-colors shadow-lg cursor-pointer"
               onClick={async () => {
                 await updateStatusAndamento(Number(notificacaoId));
-                navigate(`/notificado/${notificacaoId}`);
+                navigate(`/notificado/${notificacaoId}/atualizar`);
               }}
             >
               Não

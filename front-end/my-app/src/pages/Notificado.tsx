@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useNotificacoesList } from "../hooks/useNotificacaoList";
 import { useNotificacaoActions } from "../hooks/useNotificacaoActions";
 import { Notificacao } from "../types/notificacao";
-
+import toast from "react-hot-toast";
 export default function Notificado() {
   const { notificacaoId, flag } = useParams();
   const navigate = useNavigate();
@@ -38,18 +38,29 @@ export default function Notificado() {
       Number(notificacaoId),
       notificacao
     );
+
     if (!flag) {
-      console.log("SEM FLAG");
       notificado.notificacaoId = Number(notificacaoId);
       notificado.numero = Number(notificado.numero);
-      console.log(notificado);
       const responseNotificado = await createNotificado(notificado);
-      //navigate(`/validacao/${notificacaoId}`);
+      if (responseNotificado.code === 201 && responseNotificacao.code === 200) {
+        toast.success("Notificação e notificado atualizados com sucesso!");
+        navigate(`/validacao/${notificacaoId}`);
+      } else {
+        toast.error("Erro ao atualizar notificação e notificados");
+      }
     } else {
       const response = await updateNotificado(
         Number(notificado.id_notificado),
         notificado
       );
+
+      if (response.code === 200 && responseNotificacao.code === 200) {
+        toast.success("Notificação e notificado atualizados com sucesso!");
+        navigate(`/validacao/${notificacaoId}`);
+      } else {
+        toast.error("Erro ao atualizar notificação e notificados");
+      }
     }
   };
 
