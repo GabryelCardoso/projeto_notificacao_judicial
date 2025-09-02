@@ -13,6 +13,11 @@ export const notificacaoService = {
     return new Notificacao(response.data);
   },
 
+  findFormNotificacao: async () => {
+    const response = await api.get(`/forms/notificacao`);
+    return response.data;
+  },
+
   create: async (data: {
     titulo: string;
     descricao: string;

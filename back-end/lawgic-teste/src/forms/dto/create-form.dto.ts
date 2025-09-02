@@ -22,6 +22,15 @@ export class CreateFormDto {
   tipo: string;
 
   @ApiProperty({
+    example: 'nome',
+    description: 'chave do campo no banco',
+    required: true,
+  })
+  @IsString({ message: 'Chave deve ser uma string' })
+  @IsNotEmpty({ message: 'Chave é obrigatória' })
+  chave: string;
+
+  @ApiProperty({
     example: true,
     description: 'Se o campo é obrigatório ou não',
     required: true,
