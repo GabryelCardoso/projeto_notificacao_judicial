@@ -30,6 +30,15 @@ export default function Notificacao() {
   return (
     <div className="p-6">
       <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-4xl font-light text-white mb-2">
+            Cadastrar Notificado - Notifica
+            <span className="text-blue-300">+</span>
+          </h1>
+          <p className="text-gray-300">
+            Cadastre uma nova notificação judicial
+          </p>
+        </div>
         <div className="bg-slate-800 rounded-lg shadow-xl p-8 space-y-6">
           {formNotificacao?.map((campo: any) => (
             <div key={campo.chave}>

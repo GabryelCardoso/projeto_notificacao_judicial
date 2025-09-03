@@ -76,9 +76,7 @@ export default function Notificado() {
             Cadastrar Notificado - Notifica
             <span className="text-blue-300">+</span>
           </h1>
-          <p className="text-gray-300">
-            Cadastre uma nova notificação judicial
-          </p>
+          <p className="text-gray-300">Cadastre um novo notificado</p>
         </div>
 
         <div className="bg-slate-800 rounded-lg shadow-xl p-8 space-y-6">
